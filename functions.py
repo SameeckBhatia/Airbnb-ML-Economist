@@ -1,4 +1,5 @@
 import pandas as pd
+import scipy.stats as stats
 
 
 def merge_past_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -17,3 +18,13 @@ def merge_past_data(df: pd.DataFrame) -> pd.DataFrame:
     df.drop_duplicates(subset=["id"], keep="first", inplace=True)
 
     return df
+
+
+def outliers(frame: pd.DataFrame, col: str, remove: bool) -> pd.DataFrame:
+    z = stats.zscore(frame[col])
+    upper = 2
+    lower = -2
+
+    if remove:
+        return frame[(lower <= z) & (z <= upper)]
+    return frame[(z <= lower) | (upper <= z)]
