@@ -28,3 +28,7 @@ def outliers(frame: pd.DataFrame, col: str, remove: bool) -> pd.DataFrame:
     if remove:
         return frame[(lower <= z) & (z <= upper)]
     return frame[(z <= lower) | (upper <= z)]
+
+
+def bin_interval(lower: int, upper: int, width: int) -> range:
+    return range(lower, upper + width, width)
