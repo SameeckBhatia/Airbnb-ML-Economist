@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import requests
 import scipy.stats as stats
 
 
@@ -32,3 +34,45 @@ def outliers(frame: pd.DataFrame, col: str, remove: bool) -> pd.DataFrame:
 
 def bin_interval(lower: int, upper: int, width: int) -> range:
     return range(lower, upper + width, width)
+
+
+def collect_census() -> None:
+    # Setup
+    base_url = "https://api.census.gov/data/2022/acs/acs5"
+    variables = {"B01001_001E": "population", "B19013_001E": "median_income",
+                 "B15003_022E": "num_bachelors", "B15003_023E": "num_masters",
+                 "B15003_025E": "num_doctorate", "B02001_002E": "num_white"}
+
+    params = {"get": ",".join(list(variables.keys())),
+              "for": "zip code tabulation area:*",
+              "key": "38a7c19fc2f81ffacb02b5373a7af82a5ed2cd21"}
+
+    response = requests.get(base_url, params=params).json()
+
+    # Extraction
+    header = list(variables.values())
+    header.append("zip_code")
+    row_list = [i for i in response[1:]]
+
+    census_df = pd.DataFrame(columns=header, data=row_list)
+
+    # Transformation
+    columns = census_df.columns.tolist()
+    columns = [columns[-1]] + columns[:-1]
+    census_df = census_df[columns]
+
+    for i in list(census_df.columns)[1:]:
+        census_df[i] = pd.to_numeric(census_df[i])
+
+    sum_tertiary = np.sum(
+        census_df[["num_bachelors", "num_masters", "num_doctorate"]], axis=1)
+
+    census_df["pct_tertiary"] = sum_tertiary / census_df["population"]
+    census_df["pct_white"] = census_df["num_white"] / census_df["population"]
+    census_df["pct_tertiary"] = 100 * round(census_df["pct_tertiary"], 3)
+    census_df["pct_white"] = 100 * round(census_df["pct_white"], 3)
+
+    census_df = census_df[census_df["median_income"] > 0]
+
+    # Export
+    census_df.to_csv("supplemental_data/census.csv", index=False)
