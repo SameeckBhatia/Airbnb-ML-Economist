@@ -79,10 +79,11 @@ def collect_census() -> None:
     census_df.to_csv("supplemental_data/census.csv", index=False)
 
 
-def view_metrics(names: list, models: list, X: pd.DataFrame, y: pd.DataFrame) -> pd.DataFrame:
-    r2s = [r2(y, model.predict(X)) for model in models]
-    mses = [mse(y, model.predict(X)) for model in models]
-    
-    table = pd.DataFrame({"Model Name": names, "R^2": r2s, "MSE": mses}).set_index("Model Name")
-    
+def view_metrics(names: list, models: list, x, y) -> pd.DataFrame:
+    r2s = [r2(y, model.predict(x)) for model in models]
+    mses = [mse(y, model.predict(x)) for model in models]
+
+    table = pd.DataFrame({"Model Name": names, "R^2": r2s, "MSE": mses})
+    table = table.set_index("Model Name")
+
     return table
