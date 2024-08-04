@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import requests
 import scipy.stats as stats
+from sklearn.metrics import r2_score as r2, mean_squared_error as mse
 
 
 def merge_past_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -76,3 +77,12 @@ def collect_census() -> None:
 
     # Export
     census_df.to_csv("supplemental_data/census.csv", index=False)
+
+
+def view_metrics(names: list, models: list, X: pd.DataFrame, y: pd.DataFrame) -> pd.DataFrame:
+    r2s = [r2(y, model.predict(X)) for model in models]
+    mses = [mse(y, model.predict(X)) for model in models]
+    
+    table = pd.DataFrame({"Model Name": names, "R^2": r2s, "MSE": mses}).set_index("Model Name")
+    
+    return table
