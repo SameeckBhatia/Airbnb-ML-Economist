@@ -41,3 +41,11 @@
 | `pct_tertiary`  | The percentage of the population with tertiary education |
 | `pct_white`     | The percentage of the population identifying as 'White'  |
 
+## TripAdvisor
+
+| Column Name   | Description                |
+|---------------|----------------------------|
+| `attraction`  | Name of the attraction     |
+| `num_reviews` | Number of reviews received |
+| `latitude`    | Latitude coordinate        |
+| `longitude`   | Longitude coordinate       |
