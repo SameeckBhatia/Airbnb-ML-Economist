@@ -29,6 +29,8 @@
 
 ## United States Census
 
+### File: census.csv
+
 | Field           | Description                                              |
 |-----------------|----------------------------------------------------------|
 | `zip_code`      | The postal code representing a specific geographic area  |
@@ -43,9 +45,27 @@
 
 ## TripAdvisor
 
-| Column Name   | Description                |
-|---------------|----------------------------|
-| `attraction`  | Name of the attraction     |
-| `num_reviews` | Number of reviews received |
-| `latitude`    | Latitude coordinate        |
-| `longitude`   | Longitude coordinate       |
+### File: attractions.csv
+
+| Field         | Description                              |
+|---------------|------------------------------------------|
+| `attraction`  | Name of the attraction                   |
+| `num_reviews` | Number of reviews received by attraction |
+| `latitude`    | Latitude coordinate of the attraction    |
+| `longitude`   | Longitude coordinate of the attraction   |
+
+## City of Los Angeles
+
+### File: crime.csv
+
+| Field             | Description                                       |
+|-------------------|---------------------------------------------------|
+| `record_num`      | Unique identifier for each crime record           |
+| `date`            | Date when the crime occurred                      |
+| `time`            | Time when the crime occurred                      |
+| `crime_code`      | Code representing the type of crime               |
+| `crime_code_desc` | Description of the crime associated with the code |
+| `victim_sex`      | Sex of the victim                                 |
+| `victim_descent`  | Ethnic descent of the victim                      |
+| `latitude`        | Latitude coordinate of the crime location         |
+| `longitude`       | Longitude coordinate of the crime location        |
